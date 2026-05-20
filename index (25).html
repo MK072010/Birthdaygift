@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Birthday Surprise 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#ffd6e7,#ffe5f1,#f8dfff,#ffe8fa);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#d63384;
+  overflow-x:hidden;
+  position:relative;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* Sparkles */
+.sparkles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:radial-gradient(#fff 1px, transparent 1px);
+  background-size:40px 40px;
+  opacity:.4;
+  animation:sparkle 12s linear infinite;
+}
+
+@keyframes sparkle{
+  from{transform:translateY(0);}
+  to{transform:translateY(-40px);}
+}
+
+/* Floating Hearts */
+.hearts{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.heart{
+  position:absolute;
+  bottom:-50px;
+  font-size:20px;
+  opacity:.5;
+  animation:float linear infinite;
+}
+
+@keyframes float{
+  from{
+    transform:translateY(0) rotate(0deg);
+  }
+  to{
+    transform:translateY(-120vh) rotate(360deg);
+  }
+}
+
+.scene{
+  display:none;
+  width:100%;
+  max-width:520px;
+  padding:20px;
+  text-align:center;
+  animation:pop .7s ease;
+  z-index:2;
+}
+
+.scene.active{
+  display:block;
+}
+
+@keyframes pop{
+  0%{
+    opacity:0;
+    transform:scale(.9) translateY(20px);
+  }
+  100%{
+    opacity:1;
+    transform:none;
+  }
+}
+
+h1,h2{
+  font-family:'Pacifico',cursive;
+  color:#e91e63;
+}
+
+h1{
+  font-size:2.5rem;
+  margin-bottom:16px;
+}
+
+h2{
+  font-size:2rem;
+  margin-bottom:14px;
+}
+
+p{
+  font-size:1.2rem;
+  margin-bottom:18px;
+}
+
+button{
+  border:none;
+  outline:none;
+  cursor:pointer;
+  padding:12px 28px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#ff8ec7,#ff5ca8);
+  color:white;
+  font-size:1rem;
+  font-family:'Pacifico',cursive;
+  box-shadow:0 8px 25px rgba(233,30,99,.25);
+  transition:.3s;
+}
+
+button:hover{
+  transform:scale(1.07);
+}
+
+.glass{
+  background:rgba(255,255,255,.35);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 8px 32px rgba(31,38,135,.15);
+  border-radius:30px;
+}
+
+/* Loading */
+.loader{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  border:8px solid #ff9ecf;
+  border-top-color:transparent;
+  margin:30px auto;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+
+/* Bounce */
+.bounce{
+  animation:bounce 1.5s infinite;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-15px);}
+}
+
+/* Cake */
+.cake{
+  font-size:7rem;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.cake:hover{
+  transform:scale(1.1);
+}
+
+.cake.cut{
+  animation:shake .4s;
+}
+
+@keyframes shake{
+  0%,100%{transform:rotate(0);}
+  25%{transform:rotate(-10deg);}
+  75%{transform:rotate(10deg);}
+}
+
+/* Gallery */
+.gallery{
+  display:flex;
+  gap:15px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding:10px;
+}
+
+.gallery::-webkit-scrollbar{
+  display:none;
+}
+
+.card{
+  flex:0 0 85%;
+  scroll-snap-align:center;
+  padding:12px;
+  border-radius:24px;
+  background:rgba(255,255,255,.45);
+  backdrop-filter:blur(10px);
+  box-shadow:0 8px 20px rgba(233,30,99,.15);
+}
+
+.card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  border-radius:20px;
+}
+
+.caption{
+  margin-top:10px;
+  font-size:1.1rem;
+  color:#d81b60;
+}
+
+/* Message */
+.message{
+  padding:25px;
+  line-height:1.8;
+  font-size:1.1rem;
+  color:#880e4f;
+}
+
+/* Music Button */
+.music-btn{
+  position:fixed;
+  top:15px;
+  right:15px;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:#ff69b4;
+  color:white;
+  border:none;
+  font-size:1.3rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+}
+
+/* Confetti */
+.confetti{
+  position:fixed;
+  width:10px;
+  height:10px;
+  top:-10px;
+  opacity:0;
+  pointer-events:none;
+}
+
+/* Final */
+.final-heart{
+  font-size:5rem;
+  margin-bottom:15px;
+}
+</style>
+</head>
+<body>
+
+<div class="sparkles"></div>
+<div class="hearts" id="hearts"></div>
+
+<button class="music-btn" id="musicBtn">🎵</button>
+
+<!-- Scene 1 -->
+<div class="scene active" id="s1">
+  <div class="glass" style="padding:40px;">
+    <div class="loader"></div>
+    <h2>Loading your birthday surprise...</h2>
+    <p>Preparing something magical 💖</p>
+  </div>
+</div>
+
+<!-- Scene 2 -->
+<div class="scene" id="s2">
+  <div class="glass" style="padding:35px;">
+    <div class="bounce" style="font-size:5rem;">🎀</div>
+    <h1>My boy was born 17 years ago today!</h1>
+    <p>A little surprise awaits you ✨</p>
+    <button onclick="show(3)">Start The Surprise 💖</button>
+  </div>
+</div>
+
+<!-- Scene 3 -->
+<div class="scene" id="s3">
+  <div class="glass" style="padding:35px;">
+    <h2>Swipe or tap the cake 🎂</h2>
+    <div class="cake" id="cake" onclick="cutCake()">🎂</div>
+    <p>Make a wish and cut the cake ✨</p>
+  </div>
+</div>
+
+<!-- Scene 4 -->
+<div class="scene" id="s4">
+  <div class="glass" style="padding:35px;">
+    <div class="bounce" style="font-size:5rem;">🥳</div>
+    <h1>Happy Birthday 💖</h1>
+    <p>You deserve all the happiness in the world 🌸</p>
+    <button onclick="show(5)">Next →</button>
+  </div>
+</div>
+
+<!-- Scene 5 -->
+<div class="scene" id="s5">
+  <div class="glass" style="padding:25px;">
+    <h2>Some Sweet Moments 💕</h2>
+
+    <div class="gallery">
+
+      <div class="card">
+        <img src="g1.jpg">
+        <div class="caption">Beautiful memories together 💖</div>
+      </div>
+
+      <div class="card">
+        <img src="g1.jpg">
+        <div class="caption">Forever favorite moments ✨</div>
+      </div>
+
+      <div class="card">
+        <img src="g1.jpg">
+        <div class="caption">Smiles that light up everything 🌸</div>
+      </div>
+
+    </div>
+
+    <br>
+    <button onclick="openMessage()">Open My Message 💌</button>
+  </div>
+</div>
+
+<!-- Scene 6 -->
+<div class="scene" id="s6">
+  <div class="glass message">
+    <h2>A Special Message 💌</h2>
+    <p id="typing"></p>
+    <br>
+    <button onclick="show(7)">Celebrate 🎊</button>
+  </div>
+</div>
+
+<!-- Scene 7 -->
+<div class="scene" id="s7">
+  <div class="glass" style="padding:40px;">
+    <div class="final-heart bounce">💖</div>
+    <h1>Thank You For Existing</h1>
+    <p>You make life more beautiful 🌸</p>
+    <button onclick="show(2)">Replay Surprise</button>
+  </div>
+</div>
+
+<!-- Audio -->
+<audio id="bgm" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_946bc5c0fb.mp3?filename=happy-birthday-to-you-piano-music-box-version-22579.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* Scene Control */
+function show(n){
+  document.querySelectorAll('.scene').forEach(s=>{
+    s.classList.remove('active');
+  });
+
+  document.getElementById('s'+n).classList.add('active');
+}
+
+/* Auto Loading */
+setTimeout(()=>{
+  show(2);
+},2500);
+
+/* Floating Hearts */
+const hearts = document.getElementById('hearts');
+
+for(let i=0;i<25;i++){
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.innerHTML = ['💖','💕','💗','💞'][Math.floor(Math.random()*4)];
+
+  h.style.left = Math.random()*100 + 'vw';
+  h.style.animationDuration = (8 + Math.random()*8) + 's';
+  h.style.fontSize = (18 + Math.random()*20) + 'px';
+
+  hearts.appendChild(h);
+}
+
+/* Cake */
+function cutCake(){
+  const cake = document.getElementById('cake');
+
+  cake.classList.add('cut');
+
+  burstConfetti(70);
+
+  setTimeout(()=>{
+    show(4);
+  },700);
+}
+
+/* Confetti */
+function burstConfetti(count=50){
+
+  const colors = [
+    '#ff4fa3',
+    '#ffd54f',
+    '#4fc3f7',
+    '#ba68c8',
+    '#ff8a80'
+  ];
+
+  for(let i=0;i<count;i++){
+
+    const d = document.createElement('div');
+
+    d.className = 'confetti';
+
+    d.style.left = Math.random()*100 + 'vw';
+
+    d.style.background = colors[Math.floor(Math.random()*colors.length)];
+
+    document.body.appendChild(d);
+
+    const duration = 2000 + Math.random()*2000;
+
+    d.animate([
+      {
+        transform:`translateY(0) rotate(0deg)`,
+        opacity:1
+      },
+      {
+        transform:`translateY(110vh) rotate(${Math.random()*720}deg)`,
+        opacity:0
+      }
+    ],{
+      duration:duration,
+      easing:'ease-in'
+    });
+
+    setTimeout(()=>{
+      d.remove();
+    },duration);
+  }
+}
+
+/* Message Typing */
+const text = `
+Happy Birthday 💖
+
+You deserve all the happiness, smiles, laughter, and love in the world. 
+
+Thank you for being such an amazing person and making life brighter with your presence ✨
+
+May your future be full of success, peace, beautiful memories, and endless joy 🌸
+`;
+
+let i = 0;
+
+function typeWriter(){
+
+  const typing = document.getElementById('typing');
+
+  typing.innerHTML = "";
+
+  i = 0;
+
+  function write(){
+
+    if(i < text.length){
+      typing.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(write,35);
+    }
+  }
+
+  write();
+}
+
+function openMessage(){
+  show(6);
+  typeWriter();
+}
+
+/* Music */
+const bgm = document.getElementById('bgm');
+const musicBtn = document.getElementById('musicBtn');
+
+let playing = false;
+
+musicBtn.onclick = ()=>{
+
+  if(playing){
+    bgm.pause();
+    musicBtn.innerHTML = '🎵';
+  }else{
+    bgm.play().catch(()=>{});
+    musicBtn.innerHTML = '🔇';
+  }
+
+  playing = !playing;
+};
+</script>
+
+</body>
+</html>
